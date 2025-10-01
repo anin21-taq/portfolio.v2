@@ -67,3 +67,4 @@ Then upload the `public/` folder to your hosting provider.
 
 MIT License - feel free to use this template for your own portfolio!
 # portfolio
+# portfolio
