@@ -1,0 +1,44 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "Areta Training Center",
+      "description": "Platform e-commerce modern dengan fitur keranjang belanja dan pembayaran online.",
+      "image": "/images/training.png",
+      "technologies": ["React", "Node.js", "MongoDB", "Stripe"],
+      "github": "https://github.com/username/ecommerce-platform",
+      "demo": "https://ecommerce-demo.netlify.app",
+      "slug": "ecommerce-platform"
+    },
+    {
+      "id": 2,
+      "title": "Stifin",
+      "description": "Aplikasi manajemen tugas dengan fitur kolaborasi tim dan notifikasi real-time.",
+      "image": "/images/stifin.png",
+      "technologies": ["Vue.js", "Express", "PostgreSQL", "Socket.io"],
+      "github": "https://github.com/username/task-management",
+      "demo": "https://task-app-demo.netlify.app",
+      "slug": "task-management"
+    },
+    {
+      "id": 3,
+      "title": "Weather Dashboard",
+      "description": "Dashboard cuaca real-time dengan prediksi 7 hari dan peta interaktif.",
+      "image": "/images/training.png",
+      "technologies": ["JavaScript", "API", "Chart.js", "CSS3"],
+      "github": "https://github.com/username/weather-dashboard",
+      "demo": "https://weather-demo.netlify.app",
+      "slug": "weather-dashboard"
+    },
+    {
+      "id": 4,
+      "title": "Portfolio Website",
+      "description": "Website portfolio modern dengan animasi dan responsif design.",
+      "image": "/images/stifin.png",
+      "technologies": ["React", "Gatsby", "Styled Components", "GraphQL"],
+      "github": "https://github.com/username/portfolio-website",
+      "demo": "https://portfolio-demo.netlify.app",
+      "slug": "portfolio-website"
+    }
+  ]
+}
