@@ -1,13 +1,45 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import ProjectCard from "./ProjectCard"
 import projectsData from "../data/projects.json"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Autoplay } from "swiper/modules"
-import { motion } from "framer-motion"
-import "swiper/css"
 
 const Projects = () => {
+  const [isBrowser, setIsBrowser] = useState(false)
+  const [SwiperComponents, setSwiperComponents] = useState(null)
+  const [motionDiv, setMotionDiv] = useState(null)
+
+  useEffect(() => {
+    // Cek jika berjalan di browser
+    if (typeof window !== "undefined") {
+      setIsBrowser(true)
+
+      // Lazy-load Swiper dan Framer Motion
+      Promise.all([
+        import("swiper/react"),
+        import("swiper/css"),
+        import("swiper/modules"),
+        import("framer-motion"),
+      ]).then(([swiperReact, , swiperModules, framerMotion]) => {
+        const { Swiper, SwiperSlide } = swiperReact
+        const { Autoplay } = swiperModules
+        const { motion } = framerMotion
+        setSwiperComponents({ Swiper, SwiperSlide, Autoplay })
+        setMotionDiv(motion.div)
+      })
+    }
+  }, [])
+
+  // Jika belum di-load (saat SSR atau awal render)
+  if (!isBrowser || !SwiperComponents || !motionDiv) {
+    return null
+  }
+
+  const { Swiper, SwiperSlide, Autoplay } = SwiperComponents
+  const MotionWrapper = styled(motionDiv)`
+    width: 100%;
+    height: 100%;
+  `
+
   const repeatedProjects = [
     ...projectsData.projects,
     ...projectsData.projects,
@@ -73,7 +105,8 @@ const ProjectsContent = styled.div`
   }
 `
 
-const StyledSwiper = styled(Swiper)`
+// styled() butuh di luar komponen
+const StyledSwiper = styled.div`
   .swiper-wrapper {
     transition-timing-function: linear !important;
     align-items: stretch;
@@ -82,12 +115,6 @@ const StyledSwiper = styled(Swiper)`
     display: flex;
     height: auto;
   }
-`
-
-// Bungkus framer-motion
-const MotionWrapper = styled(motion.div)`
-  width: 100%;
-  height: 100%;
 `
 
 const ViewAllButton = styled.a`
