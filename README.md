@@ -32,7 +32,7 @@ portfolio-gatsby/
 │   ├── pages/          # All website pages
 │   ├── components/     # Reusable components
 │   ├── data/          # JSON data files
-│   ├── styles/        # Global styles
+│   ├── styles/        # global styles
 │   └── images/        # Images and assets
 ├── static/            # Static files
 └── gatsby-config.js   # Gatsby configuration
