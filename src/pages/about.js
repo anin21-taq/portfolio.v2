@@ -1,11 +1,11 @@
 import React from "react"
 import Layout from "../components/Layout"
-import SEO from "../components/SEO"
+import seo from "../components/seo"
 import styled, { keyframes } from "styled-components"
 
 const AboutPage = () => (
   <Layout>
-    <SEO title="About" />
+    <seo title="About" />
     <AboutContainer>
       <h1>Tentang Saya</h1>
       <Content>

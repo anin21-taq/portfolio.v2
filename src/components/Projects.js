@@ -9,7 +9,6 @@ const Projects = () => {
   const [motionDiv, setMotionDiv] = useState(null)
 
   useEffect(() => {
-    // Cek jika berjalan di browser
     if (typeof window !== "undefined") {
       setIsBrowser(true)
 
@@ -23,23 +22,38 @@ const Projects = () => {
         const { Swiper, SwiperSlide } = swiperReact
         const { Autoplay } = swiperModules
         const { motion } = framerMotion
+
         setSwiperComponents({ Swiper, SwiperSlide, Autoplay })
         setMotionDiv(motion.div)
       })
     }
   }, [])
 
-  // Jika belum di-load (saat SSR atau awal render)
+  // Jika masih SSR / belum load
   if (!isBrowser || !SwiperComponents || !motionDiv) {
     return null
   }
 
+  // Ambil komponen Swiper & Motion
   const { Swiper, SwiperSlide, Autoplay } = SwiperComponents
+
+  const StyledSwiper = styled(Swiper)`
+    .swiper-wrapper {
+      transition-timing-function: linear !important;
+      align-items: stretch;
+    }
+    .swiper-slide {
+      display: flex;
+      height: auto;
+    }
+  `
+
   const MotionWrapper = styled(motionDiv)`
     width: 100%;
     height: 100%;
   `
 
+  // Duplikasi project untuk infinite scroll
   const repeatedProjects = [
     ...projectsData.projects,
     ...projectsData.projects,
@@ -102,18 +116,6 @@ const ProjectsContent = styled.div`
     font-size: 2rem;
     font-weight: 700;
     color: #facc15;
-  }
-`
-
-// styled() butuh di luar komponen
-const StyledSwiper = styled.div`
-  .swiper-wrapper {
-    transition-timing-function: linear !important;
-    align-items: stretch;
-  }
-  .swiper-slide {
-    display: flex;
-    height: auto;
   }
 `
 

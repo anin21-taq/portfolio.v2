@@ -1,11 +1,18 @@
-import React from "react";
-import styled from "styled-components";
+import React from "react"
+import styled from "styled-components"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const ProjectCard = ({ project }) => {
+  const image = getImage(project.image)
+
   return (
     <Card>
       <ImageWrapper>
-        <Image src={project.image} alt={project.title} />
+        {image ? (
+          <StyledGatsbyImage image={image} alt={project.title} />
+        ) : (
+          <FallbackImg src={project.image} alt={project.title} />
+        )}
         <Overlay>
           <h3>{project.title}</h3>
         </Overlay>
@@ -25,8 +32,8 @@ const ProjectCard = ({ project }) => {
         </a>
       </Links>
     </Card>
-  );
-};
+  )
+}
 
 const Card = styled.div`
   background: #1c1c1e;
@@ -52,23 +59,33 @@ const Card = styled.div`
       transform: translateY(0);
     }
   }
-`;
+`
 
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
-`;
+`
 
-const Image = styled.img`
+// ✅ GatsbyImage with styled-components
+const StyledGatsbyImage = styled(GatsbyImage)`
   width: 100%;
-  display: block;
+  height: 250px;
+  object-fit: cover;
   transition: transform 0.5s ease;
 
   ${Card}:hover & {
     transform: scale(1.1);
   }
-`;
+`
+
+// ✅ Fallback kalau project.image masih string biasa
+const FallbackImg = styled.img`
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+`
 
 const Overlay = styled.div`
   position: absolute;
@@ -83,13 +100,13 @@ const Overlay = styled.div`
     font-size: 1.4rem;
     color: #ffd32a;
   }
-`;
+`
 
 const Description = styled.p`
   padding: 1rem;
   font-size: 1rem;
   opacity: 0.85;
-`;
+`
 
 const TechList = styled.ul`
   list-style: none;
@@ -107,7 +124,7 @@ const TechList = styled.ul`
     font-size: 0.8rem;
     color: #ffd32a;
   }
-`;
+`
 
 const Links = styled.div`
   display: flex;
@@ -131,6 +148,6 @@ const Links = styled.div`
       transform: translateY(-2px);
     }
   }
-`;
+`
 
-export default ProjectCard;
+export default ProjectCard

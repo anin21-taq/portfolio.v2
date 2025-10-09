@@ -5,7 +5,7 @@ import About from "../components/About"
 import Skills from "../components/Skills"
 import Projects from "../components/Projects"
 import Contact from "../components/Contact"
-import SEO from "../components/SEO"
+import SEO from "../components/SEO"   // huruf besar
 
 const IndexPage = () => (
   <Layout>

@@ -1,25 +1,22 @@
 module.exports = {
   siteMetadata: {
-    title: "Portfolio - [Nama Anda]",
-    description: "Portfolio website showcasing my projects and skills",
-    author: "[Nama Anda]",
-    siteUrl: "https://portfolio-anda.netlify.app",
+    title: "Portfolio - Anindra Taqi Wardhana",
+    description: "Portfolio website showcasing my projects and skills in IT, TKJ, and networking",
+    author: "Anindra Taqi Wardhana",
+    siteUrl: "https://anindra-portfolio.netlify.app",
+    keywords: ["Portfolio", "TKJ", "Networking", "React", "Gatsby", "Anindra Taqi Wardhana"],
   },
   plugins: [
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
-
-    // Folder untuk gambar
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/src/images`, // Pastikan folder ini ada
+        path: `${__dirname}/src/images`,
       },
     },
-
-    // Folder untuk data JSON
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -27,25 +24,23 @@ module.exports = {
         path: `${__dirname}/src/data`,
       },
     },
-
-    // Agar Gatsby bisa membaca file JSON
     `gatsby-transformer-json`,
-
-    // Manifest untuk icon dan PWA
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: "Portfolio - [Nama Anda]",
+        name: "Portfolio - Anindra Taqi Wardhana",
         short_name: "Portfolio",
         start_url: "/",
         background_color: "#ffffff",
-        theme_color: "#6366f1", // Tadi ada tanda backtick yang salah
+        theme_color: "#6366f1",
         display: "minimal-ui",
-        icon: "src/images/logo1.png", // Harus ada dan berbentuk kotak
+        icon: "src/images/logo1.png",
       },
     },
-
-    // Styled Components
-    `gatsby-plugin-styled-components`,
+    {
+      resolve: `gatsby-plugin-styled-components`,
+      options: { displayName: true },
+    },
+    `gatsby-plugin-react-helmet`, // penting buat SEO
   ],
-};
+}

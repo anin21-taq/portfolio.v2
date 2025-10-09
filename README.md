@@ -42,7 +42,7 @@ portfolio-gatsby/
 
 - ✅ Responsive design
 - ✅ Modern UI/UX
-- ✅ SEO optimized
+- ✅ seo optimized
 - ✅ Fast loading
 - ✅ Easy to customize
 

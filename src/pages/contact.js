@@ -1,11 +1,11 @@
 import React from "react"
 import Layout from "../components/Layout"
-import SEO from "../components/SEO"
+import seo from "../components/seo"
 import styled, { keyframes } from "styled-components"
 
 const ContactPage = () => (
   <Layout>
-    <SEO title="Contact" />
+    <seo title="Contact" />
     <ContactContainer>
       <h1>Hubungi Saya</h1>
       <p>
