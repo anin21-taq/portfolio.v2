@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import Layout from "../components/Layout"
-import seo from "../components/seo"
+import Seo from "../components/seo"
 import ProjectCard from "../components/ProjectCard"
 import projectsData from "../data/projects.json"
 import styled, { keyframes } from "styled-components"
@@ -27,7 +27,7 @@ const PortfolioPage = () => {
 
   return (
     <Layout>
-      <seo title="Portfolio" />
+      <Seo title="Portfolio" />
       <PortfolioContainer>
         <h1>Proyek Saya</h1>
         <p>Berikut adalah beberapa proyek pilihan saya:</p>

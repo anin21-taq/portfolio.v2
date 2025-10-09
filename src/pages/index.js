@@ -5,11 +5,11 @@ import About from "../components/About"
 import Skills from "../components/Skills"
 import Projects from "../components/Projects"
 import Contact from "../components/Contact"
-import SEO from "../components/SEO"   // huruf besar
+import Seo from "../components/seo"
 
 const IndexPage = () => (
   <Layout>
-    <SEO title="Home" />
+    <Seo title="Home" />
     <Hero />
     <About />
     <Skills />

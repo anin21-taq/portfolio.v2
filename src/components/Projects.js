@@ -1,41 +1,55 @@
-import React, { useEffect, useState } from "react"
-import styled from "styled-components"
-import ProjectCard from "./ProjectCard"
-import projectsData from "../data/projects.json"
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import ProjectCard from "./ProjectCard";
+import projectsData from "../data/projects.json";
 
 const Projects = () => {
-  const [isBrowser, setIsBrowser] = useState(false)
-  const [SwiperComponents, setSwiperComponents] = useState(null)
-  const [motionDiv, setMotionDiv] = useState(null)
+  const [isBrowser, setIsBrowser] = useState(false);
+  const [SwiperComponents, setSwiperComponents] = useState(null);
+  const [motionDiv, setMotionDiv] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setIsBrowser(true)
+      setIsBrowser(true);
 
-      // Lazy-load Swiper dan Framer Motion
       Promise.all([
         import("swiper/react"),
         import("swiper/css"),
         import("swiper/modules"),
         import("framer-motion"),
       ]).then(([swiperReact, , swiperModules, framerMotion]) => {
-        const { Swiper, SwiperSlide } = swiperReact
-        const { Autoplay } = swiperModules
-        const { motion } = framerMotion
+        const { Swiper, SwiperSlide } = swiperReact;
+        const { Autoplay } = swiperModules;
+        const { motion } = framerMotion;
 
-        setSwiperComponents({ Swiper, SwiperSlide, Autoplay })
-        setMotionDiv(motion.div)
-      })
+        setSwiperComponents({ Swiper, SwiperSlide, Autoplay });
+        setMotionDiv(motion.div);
+
+        // delay loading state biar skeleton kelihatan bentar
+        setTimeout(() => setIsLoading(false), 500);
+      });
     }
-  }, [])
+  }, []);
 
-  // Jika masih SSR / belum load
-  if (!isBrowser || !SwiperComponents || !motionDiv) {
-    return null
+  // Kalau masih SSR / Swiper belum siap → tampilkan skeleton
+  if (!isBrowser || !SwiperComponents || !motionDiv || isLoading) {
+    return (
+      <ProjectsContainer>
+        <ProjectsContent>
+          <h2>Proyek Terbaru</h2>
+          <SkeletonGrid>
+            {[1, 2, 3].map((i) => (
+              <ProjectCard key={i} isLoading={true} />
+            ))}
+          </SkeletonGrid>
+        </ProjectsContent>
+      </ProjectsContainer>
+    );
   }
 
-  // Ambil komponen Swiper & Motion
-  const { Swiper, SwiperSlide, Autoplay } = SwiperComponents
+  // Komponen Swiper & Motion
+  const { Swiper, SwiperSlide, Autoplay } = SwiperComponents;
 
   const StyledSwiper = styled(Swiper)`
     .swiper-wrapper {
@@ -46,19 +60,18 @@ const Projects = () => {
       display: flex;
       height: auto;
     }
-  `
+  `;
 
   const MotionWrapper = styled(motionDiv)`
     width: 100%;
     height: 100%;
-  `
+  `;
 
-  // Duplikasi project untuk infinite scroll
   const repeatedProjects = [
     ...projectsData.projects,
     ...projectsData.projects,
     ...projectsData.projects,
-  ]
+  ];
 
   return (
     <ProjectsContainer>
@@ -98,13 +111,13 @@ const Projects = () => {
         <ViewAllButton href="/portfolio">Lihat Semua Proyek</ViewAllButton>
       </ProjectsContent>
     </ProjectsContainer>
-  )
-}
+  );
+};
 
 const ProjectsContainer = styled.section`
   padding: 4rem 2rem;
   background: #000;
-`
+`;
 
 const ProjectsContent = styled.div`
   max-width: 1200px;
@@ -117,7 +130,13 @@ const ProjectsContent = styled.div`
     font-weight: 700;
     color: #facc15;
   }
-`
+`;
+
+const SkeletonGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+`;
 
 const ViewAllButton = styled.a`
   display: inline-block;
@@ -134,6 +153,6 @@ const ViewAllButton = styled.a`
     background: #facc15;
     transform: translateY(-2px);
   }
-`
+`;
 
-export default Projects
+export default Projects;

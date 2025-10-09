@@ -1,18 +1,30 @@
-import React from "react"
-import styled from "styled-components"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import React from "react";
+import styled, { keyframes } from "styled-components";
 
-const ProjectCard = ({ project }) => {
-  const image = getImage(project.image)
+const ProjectCard = ({ project, isLoading = false }) => {
+  if (isLoading) {
+    return (
+      <Card>
+        <SkeletonImage />
+        <SkeletonText width="60%" />
+        <SkeletonText width="90%" />
+        <SkeletonTagWrapper>
+          {[1, 2, 3].map((i) => (
+            <SkeletonTag key={i} />
+          ))}
+        </SkeletonTagWrapper>
+        <SkeletonLinks>
+          <SkeletonButton />
+          <SkeletonButton />
+        </SkeletonLinks>
+      </Card>
+    );
+  }
 
   return (
     <Card>
       <ImageWrapper>
-        {image ? (
-          <StyledGatsbyImage image={image} alt={project.title} />
-        ) : (
-          <FallbackImg src={project.image} alt={project.title} />
-        )}
+        <Image src={project.image} alt={project.title} />
         <Overlay>
           <h3>{project.title}</h3>
         </Overlay>
@@ -32,8 +44,10 @@ const ProjectCard = ({ project }) => {
         </a>
       </Links>
     </Card>
-  )
-}
+  );
+};
+
+/* ========== Normal Styling ========== */
 
 const Card = styled.div`
   background: #1c1c1e;
@@ -43,6 +57,7 @@ const Card = styled.div`
   color: white;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: fadeIn 0.8s ease forwards;
+  min-height: 300px;
 
   &:hover {
     transform: translateY(-8px) scale(1.02);
@@ -59,33 +74,23 @@ const Card = styled.div`
       transform: translateY(0);
     }
   }
-`
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
-`
+`;
 
-// ✅ GatsbyImage with styled-components
-const StyledGatsbyImage = styled(GatsbyImage)`
+const Image = styled.img`
   width: 100%;
-  height: 250px;
-  object-fit: cover;
+  display: block;
   transition: transform 0.5s ease;
 
   ${Card}:hover & {
     transform: scale(1.1);
   }
-`
-
-// ✅ Fallback kalau project.image masih string biasa
-const FallbackImg = styled.img`
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  display: block;
-`
+`;
 
 const Overlay = styled.div`
   position: absolute;
@@ -100,13 +105,13 @@ const Overlay = styled.div`
     font-size: 1.4rem;
     color: #ffd32a;
   }
-`
+`;
 
 const Description = styled.p`
   padding: 1rem;
   font-size: 1rem;
   opacity: 0.85;
-`
+`;
 
 const TechList = styled.ul`
   list-style: none;
@@ -124,7 +129,7 @@ const TechList = styled.ul`
     font-size: 0.8rem;
     color: #ffd32a;
   }
-`
+`;
 
 const Links = styled.div`
   display: flex;
@@ -148,6 +153,55 @@ const Links = styled.div`
       transform: translateY(-2px);
     }
   }
-`
+`;
 
-export default ProjectCard
+/* ========== Skeleton Styling ========== */
+
+const shimmer = keyframes`
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+`;
+
+const SkeletonBase = styled.div`
+  background: linear-gradient(90deg, #2a2a2c 25%, #3a3a3c 50%, #2a2a2c 75%);
+  background-size: 200% 100%;
+  animation: ${shimmer} 1.5s infinite linear;
+  border-radius: 8px;
+`;
+
+const SkeletonImage = styled(SkeletonBase)`
+  height: 150px;
+  width: 100%;
+`;
+
+const SkeletonText = styled(SkeletonBase)`
+  height: 16px;
+  width: ${(props) => props.width || "80%"};
+  margin: 8px 1rem;
+`;
+
+const SkeletonTagWrapper = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 1rem;
+`;
+
+const SkeletonTag = styled(SkeletonBase)`
+  height: 20px;
+  width: 60px;
+`;
+
+const SkeletonLinks = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  gap: 0.5rem;
+`;
+
+const SkeletonButton = styled(SkeletonBase)`
+  flex: 1;
+  height: 35px;
+  border-radius: 8px;
+`;
+
+export default ProjectCard;
