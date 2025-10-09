@@ -8,7 +8,7 @@
       "technologies": ["React", "Node.js", "MongoDB", "Stripe"],
       "github": "",
       "demo": "",
-      "slug": ""
+      "slug": "areta-training-center"
     },
     {
       "id": 2,
@@ -18,7 +18,7 @@
       "technologies": ["Vue.js", "Express", "PostgreSQL", "Socket.io"],
       "github": "",
       "demo": "",
-      "slug": ""
+      "slug": "stifin"
     },
     {
       "id": 3,
@@ -28,7 +28,7 @@
       "technologies": ["JavaScript", "API", "Chart.js", "CSS3"],
       "github": "",
       "demo": "",
-      "slug": ""
+      "slug": "weather-dashboard"
     },
     {
       "id": 4,
@@ -38,7 +38,7 @@
       "technologies": ["React", "Gatsby", "Styled Components", "GraphQL"],
       "github": "",
       "demo": "",
-      "slug": ""
+      "slug": "portfolio-website"
     }
   ]
 }
