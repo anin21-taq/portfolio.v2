@@ -1,72 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import ProjectCard from "./ProjectCard";
 import projectsData from "../data/projects.json";
+import ClientOnly from "./ClientOnly"; // pakai komponen yang kamu buat
 
 const Projects = () => {
-  const [isBrowser, setIsBrowser] = useState(false);
-  const [SwiperComponents, setSwiperComponents] = useState(null);
-  const [motionDiv, setMotionDiv] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsBrowser(true);
-
-      Promise.all([
-        import("swiper/react"),
-        import("swiper/css"),
-        import("swiper/modules"),
-        import("framer-motion"),
-      ]).then(([swiperReact, , swiperModules, framerMotion]) => {
-        const { Swiper, SwiperSlide } = swiperReact;
-        const { Autoplay } = swiperModules;
-        const { motion } = framerMotion;
-
-        setSwiperComponents({ Swiper, SwiperSlide, Autoplay });
-        setMotionDiv(motion.div);
-
-        // delay loading state biar skeleton kelihatan bentar
-        setTimeout(() => setIsLoading(false), 500);
-      });
-    }
-  }, []);
-
-  // Kalau masih SSR / Swiper belum siap → tampilkan skeleton
-  if (!isBrowser || !SwiperComponents || !motionDiv || isLoading) {
-    return (
-      <ProjectsContainer>
-        <ProjectsContent>
-          <h2>Proyek Terbaru</h2>
-          <SkeletonGrid>
-            {[1, 2, 3].map((i) => (
-              <ProjectCard key={i} isLoading={true} />
-            ))}
-          </SkeletonGrid>
-        </ProjectsContent>
-      </ProjectsContainer>
-    );
-  }
-
-  // Komponen Swiper & Motion
-  const { Swiper, SwiperSlide, Autoplay } = SwiperComponents;
-
-  const StyledSwiper = styled(Swiper)`
-    .swiper-wrapper {
-      transition-timing-function: linear !important;
-      align-items: stretch;
-    }
-    .swiper-slide {
-      display: flex;
-      height: auto;
-    }
-  `;
-
-  const MotionWrapper = styled(motionDiv)`
-    width: 100%;
-    height: 100%;
-  `;
-
   const repeatedProjects = [
     ...projectsData.projects,
     ...projectsData.projects,
@@ -78,35 +16,47 @@ const Projects = () => {
       <ProjectsContent>
         <h2>Proyek Terbaru</h2>
 
-        <StyledSwiper
-          modules={[Autoplay]}
-          spaceBetween={0}
-          slidesPerView={"auto"}
-          loop={true}
-          allowTouchMove={false}
-          speed={5000}
-          autoplay={{
-            delay: 0,
-            disableOnInteraction: false,
-          }}
-          breakpoints={{
-            320: { slidesPerView: 1, spaceBetween: 2 },
-            768: { slidesPerView: 2, spaceBetween: 3 },
-            1024: { slidesPerView: 3, spaceBetween: 4 },
-          }}
-        >
-          {repeatedProjects.map((project, index) => (
-            <SwiperSlide key={index} style={{ width: "350px" }}>
-              <MotionWrapper
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+        <ClientOnly>
+          {() => {
+            const { Swiper, SwiperSlide } = require("swiper/react");
+            const { Autoplay } = require("swiper/modules");
+            const { motion } = require("framer-motion");
+
+            const MotionWrapper = motion.div;
+
+            return (
+              <StyledSwiper
+                modules={[Autoplay]}
+                spaceBetween={0}
+                slidesPerView={"auto"}
+                loop={true}
+                allowTouchMove={false}
+                speed={5000}
+                autoplay={{
+                  delay: 0,
+                  disableOnInteraction: false,
+                }}
+                breakpoints={{
+                  320: { slidesPerView: 1, spaceBetween: 2 },
+                  768: { slidesPerView: 2, spaceBetween: 3 },
+                  1024: { slidesPerView: 3, spaceBetween: 4 },
+                }}
               >
-                <ProjectCard project={project} />
-              </MotionWrapper>
-            </SwiperSlide>
-          ))}
-        </StyledSwiper>
+                {repeatedProjects.map((project, index) => (
+                  <SwiperSlide key={index} style={{ width: "350px" }}>
+                    <MotionWrapper
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      <ProjectCard project={project} />
+                    </MotionWrapper>
+                  </SwiperSlide>
+                ))}
+              </StyledSwiper>
+            );
+          }}
+        </ClientOnly>
 
         <ViewAllButton href="/portfolio">Lihat Semua Proyek</ViewAllButton>
       </ProjectsContent>
@@ -132,10 +82,15 @@ const ProjectsContent = styled.div`
   }
 `;
 
-const SkeletonGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+const StyledSwiper = styled.div`
+  .swiper-wrapper {
+    transition-timing-function: linear !important;
+    align-items: stretch;
+  }
+  .swiper-slide {
+    display: flex;
+    height: auto;
+  }
 `;
 
 const ViewAllButton = styled.a`
